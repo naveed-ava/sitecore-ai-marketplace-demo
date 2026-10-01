@@ -7,6 +7,7 @@ import {
 } from "./types";
 import { executeSitecoreGraphQL } from "./sitecore-client";
 import { uploadPageImage } from "./media-service";
+import { isMockMode } from "./token-service";
 import {
   GET_ITEM_BY_PATH_OR_ID_QUERY,
   GET_AUTHORING_ITEM_TREE_QUERY,
@@ -259,22 +260,33 @@ export async function processXmlPageImport(
   logs.push(`[Authoring API Starting Point] ${startingPointPath}`);
   logs.push(`[Queue] Processing ${pages.length} incoming page records from XML...`);
 
-  // Check if real endpoint is accessible or if we should provide a mock fallback when offline
-  let isRealEndpointLive = false;
-  try {
+  const isRealEndpointLive = !isMockMode();
+  if (isRealEndpointLive) {
     const connCheck = await testSitecoreConnection(config);
-    isRealEndpointLive = connCheck.connected;
-    if (isRealEndpointLive) {
-      logs.push(`[Authoring API Connection] GraphQL endpoint verified live.`);
-    } else {
-      logs.push(
-        `[Authoring API Notice] Live connection check reported: ${connCheck.message}. Simulating GraphQL mutations for local demonstration.`
-      );
+    if (!connCheck.connected) {
+      logs.push(`[Authoring API ERROR] ${connCheck.message}. No items were imported.`);
+      return {
+        success: false,
+        total: pages.length,
+        created: 0,
+        updated: 0,
+        failed: pages.length,
+        logs,
+        results: pages.map((page) => ({
+          title: page.title,
+          name: page.name,
+          targetPath: page.targetFullPath,
+          action: page.status,
+          success: false,
+          error: connCheck.message,
+          timestamp: new Date().toISOString(),
+          queryOrMutationUsed: "Connection check failed",
+        })),
+      };
     }
-  } catch {
-    logs.push(
-      `[Authoring API Notice] Endpoint unavailable; executing authoring mutations in simulated real-time mode.`
-    );
+    logs.push(`[Authoring API Connection] GraphQL endpoint verified live.`);
+  } else {
+    logs.push(`[Authoring API Notice] SHOW_MOCK is enabled; simulating authoring mutations.`);
   }
 
   const parentNode = isRealEndpointLive && pages.some((page) => page.status === "CREATE")

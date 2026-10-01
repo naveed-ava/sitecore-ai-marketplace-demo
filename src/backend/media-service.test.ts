@@ -96,3 +96,26 @@ test("updates an Article with the Sitecore media reference, not the source URL",
   assert.equal(imageValue, imageField);
   assert.notEqual(imageValue, page.imageUrl);
 });
+
+test("does not simulate a live import when the authoring endpoint returns 405", async () => {
+  const originalMockMode = process.env.SHOW_MOCK;
+  process.env.SHOW_MOCK = "false";
+  let requests = 0;
+  globalThis.fetch = async () => {
+    requests++;
+    return new Response(null, { status: 405, statusText: "Method Not Allowed" });
+  };
+
+  try {
+    const result = await processXmlPageImport(config, page.targetParentPath, [page]);
+    assert.equal(requests, 1);
+    assert.equal(result.success, false);
+    assert.equal(result.failed, 1);
+    assert.equal(result.created + result.updated, 0);
+    assert.match(result.logs.at(-1) || "", /405.*No items were imported/);
+    assert.equal(result.results[0].success, false);
+  } finally {
+    if (originalMockMode === undefined) delete process.env.SHOW_MOCK;
+    else process.env.SHOW_MOCK = originalMockMode;
+  }
+});

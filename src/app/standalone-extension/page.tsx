@@ -140,10 +140,6 @@ export default function StandaloneExtension() {
         .query("application.context")
         .then((res) => {
           setAppContext(res.data);
-          // If instance URL available in context, populate endpoint
-          if (res.data?.url) {
-            setApiEndpoint(`${res.data.url.replace(/\/$/, "")}/sitecore/api/authoring/graphql/v1`);
-          }
         })
         .catch((err) => {
           console.warn("Marketplace context query failed (running in standalone mock mode):", err);
