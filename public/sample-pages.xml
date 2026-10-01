@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+  <!-- Page 1: Existing Page -> Will update 'About Us' -->
+  <page id="page-about" path="/About Us">
+    <title>About Us - Global Composable Leader</title>
+    <body>Sitecore empowers brands with AI-orchestrated digital experiences, real-time customer data integration, and enterprise-grade headless content operations across web, mobile, and omnichannel endpoints.</body>
+    <image>https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&amp;fit=crop&amp;w=1200&amp;q=80</image>
+  </page>
+
+  <!-- Page 2: Existing Page -> Will update 'Contact' -->
+  <page path="/Contact">
+    <title>Contact &amp; Global Support</title>
+    <body>Reach out to our round-the-clock Sitecore XM Cloud solutions architecture team, certified partner network, and technical support consultants worldwide.</body>
+    <image>https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&amp;fit=crop&amp;w=1200&amp;q=80</image>
+  </page>
+
+  <!-- Page 3: New Page -> Will create 'AI Ingestion Engine' -->
+  <page>
+    <title>AI Ingestion Engine</title>
+    <body>High-throughput batch ingestion pipeline transforming legacy XML feeds and unstructured documents into native Sitecore content items with schema validation and metadata enrichment.</body>
+    <image>https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&amp;fit=crop&amp;w=1200&amp;q=80</image>
+  </page>
+
+  <!-- Page 4: New Page -> Will create 'Marketplace App Showcase' -->
+  <page>
+    <title>Marketplace App Showcase</title>
+    <body>A centralized marketplace ecosystem for custom XM Cloud extensions, contextual editing panels, third-party DAM integrations, and workflow automation apps adhering to the Blok design system.</body>
+    <image>https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&amp;fit=crop&amp;w=1200&amp;q=80</image>
+  </page>
+
+  <!-- Page 5: New Page -> Will create 'Personalization and Analytics' -->
+  <page>
+    <title>Personalization and Edge Analytics</title>
+    <body>Leverage edge computing and customer data platform signals to dynamically tailor page variations, multivariate tests, and recommendation widgets with sub-second response times.</body>
+    <image>https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&amp;fit=crop&amp;w=1200&amp;q=80</image>
+  </page>
+</pages>
